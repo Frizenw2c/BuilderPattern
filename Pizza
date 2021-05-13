@@ -1,0 +1,96 @@
+<?php
+
+class Product
+{
+    private $name;
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+}
+
+abstract class Builder
+{
+    protected $product;
+
+    final public function getProduct()
+    {
+        return $this->product;
+    }
+
+    public function buildProduct()
+    {
+        $this->product = new Product();
+    }
+}
+
+class PeperoniBuilder extends Builder
+{
+    public function buildProduct()
+    {
+        parent::buildProduct();
+        $this->product->setName("<div class='Peperoni'>Пеперони</div>");
+    }
+}
+
+class MargaritaBuilder extends Builder
+{
+    public function buildProduct()
+    {
+        parent::buildProduct();
+        $this->product->setName("<div class='Margarita'>Маргарита</div>");
+    }
+}
+
+class Factory {
+    private $builder;
+
+    public function __construct(Builder $builder)
+    {
+        $this->builder = $builder;
+        $this->builder->buildProduct();
+    }
+
+    public function getProduct()
+    {
+        return $this->builder->getProduct();
+    }
+}
+
+$peperoniMaker = new Factory(new PeperoniBuilder());
+$margaritaMaker = new Factory(new MargaritaBuilder());
+print_r($peperoniMaker->getProduct()->getName());
+print_r($margaritaMaker->getProduct()->getName());
+
+?>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <style>
+  .Peperoni{
+    width:300px;
+    height: 300px;
+    border-radius:100%;
+    background-color: orange;
+  }
+  .Margarita{
+    margin-top:30px;
+    width:300px;
+    height: 300px;
+    border-radius:100%;
+    background-color: red;
+  }
+  </style>
+  <body>
+
+  </body>
+</html>
